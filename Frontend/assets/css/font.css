@@ -1,0 +1,10 @@
+@font-face {
+    font-family: 'NotoSans-regular';
+    src: url('assets/fonts/NotoSansKR-Regular.otf') format('truetype');
+  }
+  /* 영문, 특수문자 폰트 */
+@font-face {
+    font-family: 'NotoSans-regular';
+    src: url('assets/fonts/NotoSans-Regular.ttf') format('truetype');
+    unicode-range: U+0020-007E;
+  }
