@@ -1,7 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsersModule } from './users/users.module';
+import { CommonModule } from './common/common.module';
 import * as Joi from 'joi';
+import { UserEntity } from './users/entities/user.entity';
 
 @Module({
     imports: [
@@ -31,8 +34,10 @@ import * as Joi from 'joi';
             // true일 경우, TypeORMdl DB에 연결할 때, DB를 모듈의 현재 상태로 마이그레이션함(prod에서는 false로 설정!!)
             synchronize: process.env.NODE_ENV !== 'prod',
             logging: process.env.NODE_ENV !== 'prod',
-            entities: [],
+            entities: [UserEntity],
         }),
+        UsersModule,
+        CommonModule,
     ],
     controllers: [],
     providers: [],
