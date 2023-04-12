@@ -1,23 +1,24 @@
 <template>
   <div class="layout_wrapper">
     <div class="app">
-      <Nuxt />
+      <CtdLoGo/>
+      <div class="nuxt_wrapper">
+        <Nuxt />
+      </div>
+      <Navigation />
     </div>
   </div>
+  
 </template>
 <script lang="ts">
-
 </script>
-<style>
-
-.layout_wrapper{
-  background: #232526E6; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #232526E6, #414345E6);
-  background: linear-gradient(to right, #232526E6, #414345E6);
+<style scoped>
+.layout_wrapper {
+  min-height: 100vh;
 }
-.app {
-  max-width: 450px;
-  margin: 0 auto;
-  background-color: rgb(255, 255, 252);
+.nuxt_wrapper {
+  padding-bottom: 56px;
+  min-height: 92vh;
+  /* Adjust this value based on the height of your v-bottom-navigation */
 }
 </style>

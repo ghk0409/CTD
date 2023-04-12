@@ -1,6 +1,5 @@
 <template>
-  <div style="height: 2000px;">
-    <CtdLoGo/>
+  <div>
     <h3>작업 진행중, Loading</h3>
   </div>
 </template>
