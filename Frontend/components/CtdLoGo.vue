@@ -7,7 +7,7 @@
 <style scoped>
 .logo-wrapper{
   display: flex;
-  height: 8vh;
+  height: 8.5vh;
 }
 .ctd-logo {
   margin: auto;
