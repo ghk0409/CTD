@@ -1,16 +1,30 @@
 <template>
   <div>
     <div class="content_wrapper">
-      
-      <h3>작업 진행중, Loading</h3>
+      <div v-if="todos.length === 0">
+        <ImgSlider/>
+      </div>
+      <ul v-else>
+        <li v-for="(todo, index) in todos" :key="index">{{ todo }}</li>
+      </ul>
     </div>
     <div class="input_wrapper">
-      <TextField />
+      <TextField ref="TextField"/>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import TextField from '@/components/TextField.vue';
+
+export default {
+  components: {
+    TextField,
+  },
+  data: () => ({
+    todos: [],
+  }),
+};
 </script>
 
 <style scoped>

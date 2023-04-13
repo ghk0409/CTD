@@ -1,9 +1,10 @@
 <template>
     <v-form>
         <v-container>
-            <v-text-field v-model="message" :append-outer-icon="'mdi-plus'" :prepend-icon="icon" filled
+            <v-text-field v-model="todo" :append-outer-icon="'mdi-plus'" :prepend-icon="icon" filled
                 clear-icon="mdi-close-circle" clearable label="To Do" type="text" color="rgb(22,22,22)"
-                @click:append-outer="sendMessage" @click:prepend="changeIcon" @click:clear="clearMessage"></v-text-field>
+                @click:append-outer="sendTodo" @click:prepend="changeIcon" @click:clear="clearTodo"
+                @keydown.enter.prevent="sendTodo"></v-text-field>
         </v-container>
     </v-form>
 </template>
@@ -11,7 +12,7 @@
 <script lang="ts">
 export default {
     data: () => ({
-        message: '',
+        todo: '',
         iconIndex: 0,
         icons: [
             'mdi-emoticon',
@@ -32,13 +33,14 @@ export default {
     },
 
     methods: {
-        sendMessage() {
+        sendTodo() {
+            this.$parent.$data.todos.push(this.todo)
             this.resetIcon()
-            this.clearMessage()
+            this.clearTodo()
         },
-        clearMessage() {
+        clearTodo() {
             this.resetIcon()
-            this.message = ''
+            this.todo = ''
         },
         resetIcon() {
             this.iconIndex = 0
