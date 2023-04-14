@@ -1,4 +1,5 @@
 import { HttpService } from '@nestjs/axios';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsEmail, IsString } from 'class-validator';
 import { CoreEntity } from 'src/common/entities/core.entity';
 import { BeforeInsert, Column, Entity } from 'typeorm';
@@ -8,33 +9,24 @@ export class UserEntity extends CoreEntity {
     constructor(private readonly httpService: HttpService) {
         super();
     }
-    // 유저 이메일 컬럼 (unique)
+
+    @ApiProperty({ example: 'test@test.com', description: '유저 이메일' })
     @Column({ unique: true, comment: '유저 이메일' })
     @IsEmail()
     email: string;
 
-    // 유저 패스워드 컬럼 (추후 암호화 필요)
+    @ApiProperty({ example: '1234', description: '유저 패스워드' })
     @Column({ comment: '유저 패스워드' })
     @IsString()
     password: string;
 
-    // 유저 닉네임 컬럼 (랜덤 생성)
+    @ApiProperty({ example: '먹고난 치즈케이크', description: '유저 닉네임' })
     @Column({ comment: '유저 닉네임' })
     @IsString()
     nickname: string;
 
-    // 유저 이메일 인증 여부
+    @ApiProperty({ example: false, description: '유저 이메일 인증 여부' })
     @Column({ default: false, comment: '유저 이메일 인증 여부' })
     @IsBoolean()
     verified: boolean;
-
-    // 유저 닉네임 랜덤 생성 메서드 (회원가입 시만 적용)
-    // @BeforeInsert()
-    // _generateNickname(): void {
-    //     // const randomNick = this.httpService.get(
-    //     //     'https://nickname.hwanmoo.kr/?format=json&count=2',
-    //     // );
-    //     // console.log(randomNick);
-    //     this.nickname = 'test123123';
-    // }
 }
