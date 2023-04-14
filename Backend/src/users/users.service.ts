@@ -3,10 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import {
-    CreateAccountInput,
-    CreateAccountOutput,
+    CreateAccountRequestDto,
+    CreateAccountResponseDto,
 } from './dtos/create-account.dto';
 import { HttpService } from '@nestjs/axios';
+import { LoginRequestDto, LoginResponseDto } from './dtos/login.dto';
 
 @Injectable()
 export class UsersService {
@@ -20,7 +21,7 @@ export class UsersService {
     async createAccount({
         email,
         password,
-    }: CreateAccountInput): Promise<CreateAccountOutput> {
+    }: CreateAccountRequestDto): Promise<CreateAccountResponseDto> {
         try {
             const exist = await this.users.findOne({ where: { email } });
             // 이메일 중복 유저 확인
@@ -50,6 +51,44 @@ export class UsersService {
             );
 
             return { ok: true };
+        } catch (error) {
+            return {
+                ok: false,
+                error,
+            };
+        }
+    }
+
+    // 유저 로그인
+    async login({
+        email,
+        password,
+    }: LoginRequestDto): Promise<LoginResponseDto> {
+        try {
+            // 1. find the user with the email
+            const user = await this.users.findOne({ where: { email } });
+            // 해당 유저가 존재하지 않을 경우
+            if (!user) {
+                return {
+                    ok: false,
+                    error: '해당 이메일이 존재하지 않습니다. 다시 한 번 확인해주세요^^',
+                };
+            }
+            // 2. check if the password is correct
+            const checkPassword = await user.checkPassword(password);
+            // 패스워드 일치하지 않을 경우
+            if (!checkPassword) {
+                return {
+                    ok: false,
+                    error: '비밀번호가 일치하지 않습니다. 다시 한 번 확인해주세요^^',
+                };
+            }
+            // 3. make a JWT and give it to the user #TODO
+
+            return {
+                ok: true,
+                token: '#eaf!9dasfoi',
+            };
         } catch (error) {
             return {
                 ok: false,
