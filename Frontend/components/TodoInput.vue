@@ -13,6 +13,8 @@
 export default {
     data: () => ({
         todo: '',
+        isDone :'',
+        
         iconIndex: 0,
         icons: [
             'mdi-emoticon',
@@ -34,7 +36,10 @@ export default {
 
     methods: {
         sendTodo() {
-            this.$parent.$data.todos.push(this.todo)
+            this.$parent.$data.todos.push({
+                todo : this.todo,
+                isDone : false
+            })
             this.resetIcon()
             this.clearTodo()
         },
