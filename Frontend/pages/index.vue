@@ -13,7 +13,8 @@
                 <v-list-item-action>
                   <v-checkbox v-model="todoObj.isDone" :color="todoObj.isDone && 'grey' || 'primary'">
                     <template v-slot:label>
-                      <div :style="{ textDecoration: todoObj.isDone ? 'line-through' : 'none' }" class="ms-4" v-text="todoObj.todo">
+                      <div :style="{ textDecoration: todoObj.isDone ? 'line-through' : 'none' }" class="ms-4"
+                        v-text="todoObj.todo">
                       </div>
                     </template>
                   </v-checkbox>
@@ -32,6 +33,11 @@
         </v-card>
       </div>
     </div>
+    <v-fab-transition>
+      <v-btn color="red" fab dark small absolute bottom right>
+        <v-icon>mdi-account-key</v-icon>
+      </v-btn>
+    </v-fab-transition>
     <div class="input_wrapper">
       <TodoInput ref="TodoInput" />
     </div>
