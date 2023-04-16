@@ -34,7 +34,7 @@
       </div>
     </div>
     <v-fab-transition>
-      <v-btn color="red" fab dark small absolute bottom right>
+      <v-btn color="red" to="/login" fab dark small absolute bottom right>
         <v-icon>mdi-account-key</v-icon>
       </v-btn>
     </v-fab-transition>
@@ -44,7 +44,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import TodoInput from '~/components/TodoInput.vue';
 
 export default {
