@@ -4,7 +4,9 @@
       <Navigation />
       <CtdLoGo />
       <v-main>
-        <Nuxt />
+        <v-fade-transition>
+          <Nuxt />
+        </v-fade-transition>
       </v-main>
     </v-app>
   </div>
