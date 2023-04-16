@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsEmail, IsString } from 'class-validator';
 import { CoreEntity } from 'src/common/entities/core.entity';
-import { BeforeInsert, Column, Entity } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, Entity } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { InternalServerErrorException } from '@nestjs/common';
 
@@ -29,12 +29,16 @@ export class UserEntity extends CoreEntity {
 
     // 패스워드 해싱
     @BeforeInsert()
+    @BeforeUpdate()
     async hashPassword(): Promise<void> {
-        try {
-            this.password = await bcrypt.hash(this.password, 10);
-        } catch (error) {
-            console.log(error);
-            throw new InternalServerErrorException();
+        // 패스워드 있을 경우에만 실행 (프로필 수정에 패스워드 없을 떄 실행 방지)
+        if (this.password) {
+            try {
+                this.password = await bcrypt.hash(this.password, 10);
+            } catch (error) {
+                console.log(error);
+                throw new InternalServerErrorException();
+            }
         }
     }
 

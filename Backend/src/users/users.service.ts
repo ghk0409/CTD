@@ -9,6 +9,11 @@ import {
 import { HttpService } from '@nestjs/axios';
 import { LoginRequestDto, LoginResponseDto } from './dtos/login.dto';
 import { AuthService } from 'src/auth/auth.service';
+import {
+    UserProfileEditRequestDto,
+    UserProfileEditResponseDto,
+    UserProfileResponseDto,
+} from './dtos/user-profile.dto';
 @Injectable()
 export class UsersService {
     constructor(
@@ -104,5 +109,70 @@ export class UsersService {
     }
 
     // 유저 정보 조회
-    // async getProfile()
+    async getProfile({ id }): Promise<UserProfileResponseDto> {
+        try {
+            const user = await this.users.findOne({ where: { id } });
+            if (!user) {
+                return {
+                    ok: false,
+                    error: '해당 유저가 존재하지 않습니다.',
+                };
+            }
+            return {
+                ok: true,
+                user: {
+                    id: user.id,
+                    email: user.email,
+                    nickname: user.nickname,
+                },
+            };
+        } catch (error) {
+            return {
+                ok: false,
+                error,
+            };
+        }
+    }
+
+    // 유저 정보 수정
+    async editProfile(
+        userId: number,
+        { email, password, nickname }: UserProfileEditRequestDto,
+    ): Promise<UserProfileEditResponseDto> {
+        try {
+            const user = await this.users.findOne({ where: { id: userId } });
+            if (!user) {
+                return {
+                    ok: false,
+                    error: '해당 유저가 존재하지 않습니다.',
+                };
+            }
+
+            // 이메일 수정
+            if (email) {
+                user.email = email;
+                user.verified = false;
+                // 이메일 인증 테이블 데이터 생성 및 인증 이메일 발송 : TODO
+            }
+            // 패스워드 수정
+            if (password) {
+                user.password = password;
+            }
+            // 닉네임 수정
+            if (nickname) {
+                user.nickname = nickname;
+            }
+
+            await this.users.save(user);
+
+            return {
+                ok: true,
+            };
+        } catch (error) {
+            return {
+                ok: false,
+                error,
+            };
+        }
+    }
 }
