@@ -1,4 +1,12 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    HttpCode,
+    Post,
+    Req,
+    UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import {
     CreateAccountRequestDto,
@@ -8,9 +16,12 @@ import {
     ApiBody,
     ApiCreatedResponse,
     ApiOperation,
+    ApiParam,
     ApiTags,
 } from '@nestjs/swagger';
 import { LoginRequestDto, LoginResponseDto } from './dtos/login.dto';
+import { JwtAuthGuard } from 'src/auth/auth.guard';
+import { AuthUser } from 'src/auth/auth-user.decorator';
 
 @ApiTags('유저 API')
 @Controller('users')
@@ -49,5 +60,20 @@ export class UsersController {
         @Body() loginInput: LoginRequestDto,
     ): Promise<LoginResponseDto> {
         return this.usersService.login(loginInput);
+    }
+
+    @Get('/profile')
+    @HttpCode(200)
+    @ApiOperation({
+        summary: '유저 프로필 조회 API',
+        description: '유저 프로필을 조회한다',
+    })
+    @ApiCreatedResponse({
+        description: '유저 프로필 조회 성공',
+        // type: UserProfileResponseDto,
+    })
+    @UseGuards(JwtAuthGuard)
+    async getProfile(@Req() req) {
+        return req.user;
     }
 }

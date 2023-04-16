@@ -1,4 +1,3 @@
-import { HttpService } from '@nestjs/axios';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsEmail, IsString } from 'class-validator';
 import { CoreEntity } from 'src/common/entities/core.entity';
@@ -8,10 +7,6 @@ import { InternalServerErrorException } from '@nestjs/common';
 
 @Entity()
 export class UserEntity extends CoreEntity {
-    constructor(private readonly httpService: HttpService) {
-        super();
-    }
-
     @ApiProperty({ example: 'test@test.com', description: '유저 이메일' })
     @Column({ unique: true, comment: '유저 이메일' })
     @IsEmail()

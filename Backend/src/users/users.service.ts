@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UseGuards } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -8,13 +8,14 @@ import {
 } from './dtos/create-account.dto';
 import { HttpService } from '@nestjs/axios';
 import { LoginRequestDto, LoginResponseDto } from './dtos/login.dto';
-
+import { AuthService } from 'src/auth/auth.service';
 @Injectable()
 export class UsersService {
     constructor(
         @InjectRepository(UserEntity)
         private readonly users: Repository<UserEntity>,
         private readonly httpService: HttpService,
+        private readonly authService: AuthService,
     ) {}
 
     // 유저 회원가입
@@ -83,17 +84,25 @@ export class UsersService {
                     error: '비밀번호가 일치하지 않습니다. 다시 한 번 확인해주세요^^',
                 };
             }
-            // 3. make a JWT and give it to the user #TODO
+            // 3. make a JWT and give it to the user
+            const token = await this.authService.sign({
+                userId: user.id,
+                email: user.email,
+            });
 
             return {
                 ok: true,
-                token: '#eaf!9dasfoi',
+                token,
             };
         } catch (error) {
+            console.log(error);
             return {
                 ok: false,
                 error,
             };
         }
     }
+
+    // 유저 정보 조회
+    // async getProfile()
 }
