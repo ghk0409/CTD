@@ -5,6 +5,11 @@ import { setupSwagger } from './util/swagger';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
+    // cors 설정
+    app.enableCors({
+        origin: true,
+        credentials: true,
+    });
     // 데이터 유효성 검사를 위한 pipeline 설정
     app.useGlobalPipes(
         new ValidationPipe({
