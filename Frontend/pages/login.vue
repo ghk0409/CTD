@@ -15,17 +15,15 @@ export default {
         email: '',
         emailRules: [
             value => {
-                if (value?.length > 3) return true
-
-                return 'email must be at least 3 characters.'
+                if (value?.length > 0) return true
+                return '이메일을 입력해주세요.'
             },
         ],
         password: '',
         passwordRules: [
             value => {
-                if (/[^0-9]/.test(value)) return true
-                
-                return 'password can not contain digits.'
+                if (value?.length > 0) return true
+                return '비밀번호를 입력해주세요.'
             },
         ],
     }),
