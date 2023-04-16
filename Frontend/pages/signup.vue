@@ -1,6 +1,6 @@
 <template>
     <v-sheet width="300" class="mx-auto mt-7">
-        <v-form fast-fail @submit.prevent>
+        <v-form fast-fail ref="form" @submit.prevent="submitForm">
             <v-text-field v-model="email" label="new email" :rules="emailRules" required></v-text-field>
             <v-text-field v-model="password" label="password" type="password" :rules="passwordRules"
                 required></v-text-field>
@@ -36,5 +36,22 @@ export default {
             ];
         },
     },
+    methods: {
+    async submitForm() {
+      if (this.$refs.form.validate()) {
+        try {
+          const response = await this.$axios.$post('/users/join', {
+            email: this.email,
+            password: this.password,
+          });
+          //완료 후 처리 -> 스낵바 추가 예정
+          this.$router.push('/');
+        } catch (error) {
+          //실패 후 처리 -> 스낵바 추가 예정
+          console.error('Signup failed:', error);
+        }
+      }
+    },
+  },
 }
 </script>
