@@ -5,6 +5,8 @@ import { UsersModule } from './users/users.module';
 import { CommonModule } from './common/common.module';
 import * as Joi from 'joi';
 import { UserEntity } from './users/entities/user.entity';
+import { AuthModule } from './auth/auth.module';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
     imports: [
@@ -21,7 +23,7 @@ import { UserEntity } from './users/entities/user.entity';
                 DB_USERNAME: Joi.string().required(),
                 DB_PASSWORD: Joi.string().required(),
                 DB_NAME: Joi.string().required(),
-                // PRIVATE_KEY: Joi.string().required(),
+                JWT_SECRET_KEY: Joi.string().required(),
             }),
         }),
         TypeOrmModule.forRoot({
@@ -36,8 +38,10 @@ import { UserEntity } from './users/entities/user.entity';
             logging: process.env.NODE_ENV !== 'prod',
             entities: [UserEntity],
         }),
+        PassportModule,
         UsersModule,
         CommonModule,
+        AuthModule,
     ],
     controllers: [],
     providers: [],

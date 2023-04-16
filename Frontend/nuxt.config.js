@@ -3,8 +3,8 @@ import colors from 'vuetify/es5/util/colors'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - Frontend',
-    title: 'Frontend',
+    titleTemplate: 'CTD - AI Coach To Do', //3D3C3C - 80807C
+    title: 'Coach To Do',
     htmlAttrs: {
       lang: 'en'
     },
@@ -21,6 +21,9 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
+    '@/assets/css/main.css',
+    '@/assets/css/main.scss',
+    '@/assets/css/font.css'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -46,7 +49,7 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: true,
+      dark: false,
       themes: {
         dark: {
           primary: colors.blue.darken2,
