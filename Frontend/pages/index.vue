@@ -34,7 +34,7 @@
       </div>
     </div>
     <v-fab-transition>
-      <v-btn color="red" to="/login" fab dark small absolute bottom right>
+      <v-btn color="red" to="/login" fab dark small fixed :style="{ right: 'calc(50% - 200px)', bottom: '150px' }">
         <v-icon>mdi-account-key</v-icon>
       </v-btn>
     </v-fab-transition>
