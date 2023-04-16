@@ -4,7 +4,6 @@ import {
     Get,
     HttpCode,
     Post,
-    Req,
     UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
@@ -13,15 +12,21 @@ import {
     CreateAccountResponseDto,
 } from './dtos/create-account.dto';
 import {
+    ApiBearerAuth,
     ApiBody,
     ApiCreatedResponse,
     ApiOperation,
-    ApiParam,
     ApiTags,
 } from '@nestjs/swagger';
 import { LoginRequestDto, LoginResponseDto } from './dtos/login.dto';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { AuthUser } from 'src/auth/auth-user.decorator';
+import { UserEntity } from './entities/user.entity';
+import {
+    UserProfileEditRequestDto,
+    UserProfileEditResponseDto,
+    UserProfileResponseDto,
+} from './dtos/user-profile.dto';
 
 @ApiTags('유저 API')
 @Controller('users')
@@ -70,10 +75,37 @@ export class UsersController {
     })
     @ApiCreatedResponse({
         description: '유저 프로필 조회 성공',
-        // type: UserProfileResponseDto,
+        type: UserProfileResponseDto,
     })
+    @ApiBearerAuth('access-token')
     @UseGuards(JwtAuthGuard)
-    async getProfile(@Req() req) {
-        return req.user;
+    async getProfile(
+        @AuthUser() authUser: UserEntity,
+    ): Promise<UserProfileResponseDto> {
+        return this.usersService.getProfile(authUser);
+    }
+
+    @Post('/profile')
+    @HttpCode(201)
+    @ApiOperation({
+        summary: '유저 프로필 수정 API',
+        description: '유저 프로필을 수정한다',
+    })
+    @ApiCreatedResponse({
+        description: '유저 프로필 수정 성공',
+        type: UserProfileEditRequestDto,
+    })
+    @ApiBearerAuth('access-token')
+    @UseGuards(JwtAuthGuard)
+    async editProfile(
+        @AuthUser() authUser: UserEntity,
+        @Body() userProfileEditRequestDto: UserProfileEditRequestDto,
+    ): Promise<UserProfileEditResponseDto> {
+        console.log(authUser);
+        console.log(userProfileEditRequestDto);
+        return this.usersService.editProfile(
+            authUser.id,
+            userProfileEditRequestDto,
+        );
     }
 }
