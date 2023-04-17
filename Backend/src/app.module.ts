@@ -7,6 +7,8 @@ import * as Joi from 'joi';
 import { UserEntity } from './users/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
+import { TodosModule } from './todos/todos.module';
+import { TodoEntity } from './todos/entities/todo.entity';
 
 @Module({
     imports: [
@@ -36,12 +38,13 @@ import { PassportModule } from '@nestjs/passport';
             // true일 경우, TypeORMdl DB에 연결할 때, DB를 모듈의 현재 상태로 마이그레이션함(prod에서는 false로 설정!!)
             synchronize: process.env.NODE_ENV !== 'prod',
             logging: process.env.NODE_ENV !== 'prod',
-            entities: [UserEntity],
+            entities: [UserEntity, TodoEntity],
         }),
         PassportModule,
         UsersModule,
         CommonModule,
         AuthModule,
+        TodosModule,
     ],
     controllers: [],
     providers: [],
