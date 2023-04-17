@@ -82,6 +82,7 @@ export class UsersController {
     async getProfile(
         @AuthUser() authUser: UserEntity,
     ): Promise<UserProfileResponseDto> {
+        console.log(authUser);
         return this.usersService.getProfile(authUser);
     }
 
