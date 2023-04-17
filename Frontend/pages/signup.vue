@@ -14,10 +14,7 @@
 export default {
   data: () => ({
     email: '',
-    emailRules: [
-      value => !!value || '이메일을 입력해주세요.',
-      value => /.+@.+/.test(value) || '이메일이 올바른 형식이 아닙니다.'
-    ],
+    emailError: '',
     password: '',
     passwordRules: [
       value => !!value || '비밀번호를 입력해주세요.',
@@ -34,15 +31,29 @@ export default {
         value => value === this.password || '비밀번호가 일치하지 않습니다.'
       ];
     },
+    emailRules() {
+      return [
+        value => !!value || '이메일을 입력해주세요.',
+        value => /.+@.+/.test(value) || '이메일이 올바른 형식이 아닙니다.',
+        value => !this.emailError || this.emailError,
+      ]
+    }
   },
   methods: {
     async submitForm() {
       if (this.$refs.form.validate()) {
         try {
+          this.$root.$emit('showSnackbar', '요청 중입니다.', 'blue', 1500);
           const response = await this.$axios.$post('/users/join', {
             email: this.email,
             password: this.password,
           });
+          if(response.data.ok==='false'){
+            if(response.data.error==='이미 존재하는 이메일입니다.'){
+              this.emailError = errorMessage;
+              this.$refs.form.validate();
+            }
+          }
           this.$root.$emit('showSnackbar', '회원가입이 성공적으로 완료되었습니다.', 'blue', 5000);
           this.$router.push('/');
         } catch (error) {
