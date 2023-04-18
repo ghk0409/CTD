@@ -2,7 +2,7 @@ import colors from 'vuetify/es5/util/colors'
 
 export default {
   head: {
-    titleTemplate: 'CTD - AI Coach To Do', 
+    titleTemplate: 'CTD - AI Coach To Do',
     title: 'Coach To Do',
     htmlAttrs: {
       lang: 'en'
@@ -36,10 +36,31 @@ export default {
 
   modules: [
     '@nuxtjs/axios',
+    //auth-next 대체
+    '@nuxtjs/auth'
   ],
   axios: {
     // API URL 구성
     baseURL: 'http://localhost:3001',
+  },
+  // 인증 전략
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: '/users/login', method: 'post', propertyName: 'token' },
+          logout: false,
+          user: { url: '/users/profile', method: 'get' },
+        },
+        tokenRequired: true,
+        tokenType: 'Bearer',
+        autoFetchUser: true,
+        globalToken: true,
+        redirect: {
+        },
+      },
+
+    },
   },
 
   vuetify: {
@@ -59,8 +80,7 @@ export default {
       }
     }
   },
-
-  // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-  }
+  },
+  //loading: '~/assets/loading.vue',
 }
