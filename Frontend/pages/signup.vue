@@ -1,7 +1,8 @@
 <template>
   <v-sheet width="300" class="mx-auto mt-7">
     <v-form fast-fail ref="form" @submit.prevent="submitForm">
-      <v-text-field v-model="email" label="new email" :rules="emailRules" required></v-text-field>
+      <v-text-field v-model="email" label="new email" :rules="emailRules" required
+        @input="resetEmailError"></v-text-field>
       <v-text-field v-model="password" label="password" type="password" :rules="passwordRules" required></v-text-field>
       <v-text-field v-model="confirmPassword" label="confirm password" type="password" :rules="confirmPasswordRules"
         required></v-text-field>
@@ -43,19 +44,21 @@ export default {
     async submitForm() {
       if (this.$refs.form.validate()) {
         try {
-          this.$root.$emit('showSnackbar', '요청 중입니다.', 'blue', 1500);
           const response = await this.$axios.$post('/users/join', {
             email: this.email,
             password: this.password,
           });
-          if(response.data.ok==='false'){
-            if(response.data.error==='이미 존재하는 이메일입니다.'){
-              this.emailError = errorMessage;
-              this.$refs.form.validate();
-            }
+          console.log(response.ok === false)
+          console.log(response.error === '이미 존재하는 이메일입니다.')
+
+          if (response.error && response.error === '이미 존재하는 이메일입니다.') {
+            this.emailError = response.error;
+            this.$refs.form.validate();
           }
-          this.$root.$emit('showSnackbar', '회원가입이 성공적으로 완료되었습니다.', 'blue', 5000);
-          this.$router.push('/');
+          else {
+            this.$root.$emit('showSnackbar', '회원가입이 성공적으로 완료되었습니다.', 'blue', 5000);
+            this.$router.push('/');
+          }
         } catch (error) {
           console.error('Signup failed:', error);
           if (error.response) {
@@ -65,6 +68,12 @@ export default {
           }
           this.$router.push('/');
         }
+      }
+    },
+    resetEmailError() {
+      if (this.emailError) {
+        this.emailError = '';
+        this.$refs.form.validate();
       }
     },
   },
