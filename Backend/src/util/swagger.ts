@@ -7,6 +7,16 @@ export const setupSwagger = (app: INestApplication): void => {
         .setTitle('CTD API Docs')
         .setDescription('CTD API')
         .setVersion('1.0.0')
+        // jwt 토큰 설정
+        .addBearerAuth(
+            {
+                type: 'http',
+                scheme: 'bearer',
+                name: 'JWT',
+                in: 'header',
+            },
+            'access-token',
+        )
         .build();
 
     const document = SwaggerModule.createDocument(app, options);

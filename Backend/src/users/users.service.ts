@@ -1,4 +1,4 @@
-import { Injectable, UseGuards } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -72,7 +72,10 @@ export class UsersService {
     }: LoginRequestDto): Promise<LoginResponseDto> {
         try {
             // 1. find the user with the email
-            const user = await this.users.findOne({ where: { email } });
+            const user = await this.users.findOne({
+                where: { email },
+                select: ['id', 'email', 'password'],
+            });
             // 해당 유저가 존재하지 않을 경우
             if (!user) {
                 return {
