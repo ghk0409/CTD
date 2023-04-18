@@ -19,7 +19,7 @@ export default {
     password: '',
     passwordRules: [
       value => !!value || '비밀번호를 입력해주세요.',
-      value => (value && value.length >= 8) || '비밀번호는 8자 이상으로 구성되어야 합니다.',
+      value => (value && value.length >= 8 && value.length <= 15) || '비밀번호는 8자 이상 15자 이하로 구성되어야 합니다.',
       value => /[A-Z]/.test(value) || '비밀번호는 대문자가 포함되어야 합니다.',
       value => /[!@#$%^&*(),.?":{}|<>]/.test(value) || '비밀번호는 특수문자가 포함되어야 합니다.'
     ],
@@ -35,7 +35,7 @@ export default {
     emailRules() {
       return [
         value => !!value || '이메일을 입력해주세요.',
-        value => /.+@.+/.test(value) || '이메일이 올바른 형식이 아닙니다.',
+        value => /^.+@.+\..{2,}$/.test(value) || '이메일이 올바른 형식이 아닙니다.',
         value => !this.emailError || this.emailError,
       ]
     }
@@ -51,7 +51,7 @@ export default {
           console.log(response.ok === false)
           console.log(response.error === '이미 존재하는 이메일입니다.')
 
-          if (response.error && response.error === '이미 존재하는 이메일입니다.') {
+          if (response.ok === false && response.error === '이미 존재하는 이메일입니다.') {
             this.emailError = response.error;
             this.$refs.form.validate();
           }
