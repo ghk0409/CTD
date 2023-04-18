@@ -13,7 +13,7 @@ export class UserEntity extends CoreEntity {
     email: string;
 
     @ApiProperty({ example: '1234', description: '유저 패스워드' })
-    @Column({ comment: '유저 패스워드' })
+    @Column({ select: false, comment: '유저 패스워드' })
     @IsString()
     password: string;
 
