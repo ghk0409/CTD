@@ -19,9 +19,7 @@
                     </template>
                   </v-checkbox>
                 </v-list-item-action>
-
                 <v-spacer></v-spacer>
-
                 <v-scroll-x-transition>
                   <v-icon v-if="todoObj.isDone" color="success">
                     mdi-check
@@ -34,8 +32,13 @@
       </div>
     </div>
     <v-fab-transition>
-      <v-btn color="red" to="/login" fab dark small fixed :style="{ right: 'calc(50% - 200px)', bottom: '150px' }">
+      <v-btn v-if="!this.$auth.loggedIn" color="red" to="/login" fab dark small fixed
+        :style="{ right: 'calc(50% - 200px)', bottom: '150px' }">
         <v-icon>mdi-account-key</v-icon>
+      </v-btn>
+      <v-btn v-if="this.$auth.loggedIn" color="green" fab dark small fixed
+        :style="{ right: 'calc(50% - 200px)', bottom: '150px' }" @click="logout()">
+        <v-icon>mdi-account</v-icon>
       </v-btn>
     </v-fab-transition>
     <div class="input_wrapper">
@@ -46,7 +49,6 @@
 
 <script>
 import TodoInput from '~/components/TodoInput.vue';
-
 export default {
   components: {
     TodoInput,
@@ -54,6 +56,16 @@ export default {
   data: () => ({
     todos: [],
   }),
+  methods: {
+    async logout() {
+      try {
+        await this.$auth.logout();
+        this.$root.$emit('showSnackbar', '로그아웃되었습니다.', 'blue', 5000);
+      } catch (error) {
+        console.error('로그아웃 실패:', error);
+      }
+    },
+  },
 };
 </script>
 

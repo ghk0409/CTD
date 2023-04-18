@@ -48,10 +48,8 @@ export default {
             email: this.email,
             password: this.password,
           });
-          console.log(response.ok === false)
-          console.log(response.error === '이미 존재하는 이메일입니다.')
-
-          if (response.ok === false && response.error === '이미 존재하는 이메일입니다.') {
+          // 오류 메시지 수신
+          if (response.ok === false) {
             this.emailError = response.error;
             this.$refs.form.validate();
           }
