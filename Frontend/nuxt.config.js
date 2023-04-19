@@ -50,14 +50,18 @@ export default {
         endpoints: {
           login: { url: '/users/login', method: 'post', propertyName: 'token' },
           logout: false,
-          user: { url: '/users/profile', method: 'get' },
+          user: false,
         },
         tokenRequired: true,
         tokenType: 'Bearer',
         autoFetchUser: true,
         globalToken: true,
-        redirect: {
-        },
+      },
+      redirect: {
+        login: '/login',
+        logout: '/',
+        callback: '/login',
+        home: '/'
       },
 
     },

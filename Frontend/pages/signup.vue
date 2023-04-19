@@ -13,6 +13,8 @@
 
 <script>
 export default {
+  middleware: 'authenticated',
+
   data: () => ({
     email: '',
     emailError: '',

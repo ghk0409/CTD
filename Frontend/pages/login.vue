@@ -11,6 +11,8 @@
 
 <script>
 export default {
+    middleware: 'authenticated',
+
     data: () => ({
         email: '',
         emailRules: [
@@ -22,6 +24,7 @@ export default {
             value => !!value || '비밀번호를 입력해주세요.',
         ],
     }),
+    
     methods: {
         async onLogin() {
             if (this.$refs.loginForm.validate()) {
