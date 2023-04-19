@@ -50,19 +50,19 @@ export default {
         endpoints: {
           login: { url: '/users/login', method: 'post', propertyName: 'token' },
           logout: false,
-          user: false,
+          user: { url: '/users/profile', method: 'get', },
         },
         tokenRequired: true,
         tokenType: 'Bearer',
-        autoFetchUser: true,
+        autoFetchUser: false, // 모든 페이지 user 호출
         globalToken: true,
       },
-      redirect: {
-        login: '/login',
-        logout: '/',
-        callback: '/login',
-        home: '/'
-      },
+      // redirect: {
+      //   login: '/login',
+      //   logout: '/',
+      //   callback: '/login',
+      //   home: '/'
+      // },
 
     },
   },
@@ -87,4 +87,6 @@ export default {
   build: {
   },
   //loading: '~/assets/loading.vue',
+
+  //plugins: ['~/plugins/axios'],
 }

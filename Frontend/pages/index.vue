@@ -32,11 +32,11 @@
       </div>
     </div>
     <v-fab-transition>
-      <v-btn v-if="!isLoggedIn" color="red" to="/login" fab dark small fixed
+      <v-btn v-if="!this.$auth.loggedIn" color="red" to="/login" fab dark small fixed
         :style="{ right: 'calc(50% - 200px)', bottom: '150px' }">
         <v-icon>mdi-account-key</v-icon>
       </v-btn>
-      <v-btn v-if="isLoggedIn" color="green" fab dark small fixed
+      <v-btn v-if="this.$auth.loggedIn" color="green" fab dark small fixed
         :style="{ right: 'calc(50% - 200px)', bottom: '150px' }" @click="logout()">
         <v-icon>mdi-account</v-icon>
       </v-btn>
@@ -54,7 +54,7 @@ export default {
   
   async asyncData({ app }) {
     try {
-      if (app.$auth.loggedIn && app.$auth.getToken('local') !== 'Bearer undefined') {
+      if (app.$auth.loggedIn) {
         const response = await axios.get('http://localhost:3001/todos', {
           headers: {
             Authorization: `${app.$auth.getToken('local')}`,
@@ -85,12 +85,6 @@ export default {
       }
     },
   },
-  computed: {
-  isLoggedIn() {
-    const token = this.$auth.getToken('local');
-    return this.$auth.loggedIn && token !== undefined && token !== 'Bearer undefined';
-  },
-},
 };
 </script>
 
