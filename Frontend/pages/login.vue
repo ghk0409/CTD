@@ -11,6 +11,7 @@
 
 <script>
 export default {
+
     data: () => ({
         email: '',
         emailRules: [
@@ -22,6 +23,7 @@ export default {
             value => !!value || '비밀번호를 입력해주세요.',
         ],
     }),
+    
     methods: {
         async onLogin() {
             if (this.$refs.loginForm.validate()) {
@@ -33,8 +35,10 @@ export default {
                         },
                     })
                     if (response.data.ok === true) {
-
+                        //로그인 성공 후 사용자 정보 가져오기
+                        await this.$auth.fetchUser();
                         this.$root.$emit('showSnackbar', '로그인되었습니다.', 'blue', 5000);
+                        this.$router.push('/');
                     } else {
                         this.$root.$emit('showSnackbar', '아이디 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.', 'red', 5000);
                     }

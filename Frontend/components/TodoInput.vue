@@ -14,7 +14,6 @@ export default {
     data: () => ({
         todo: '',
         isDone :'',
-        
         iconIndex: 0,
         icons: [
             'mdi-emoticon',

@@ -49,7 +49,26 @@
 
 <script>
 import TodoInput from '~/components/TodoInput.vue';
+import axios from 'axios';
 export default {
+  
+  async asyncData({ app }) {
+    try {
+      if (app.$auth.loggedIn) {
+        const response = await axios.get('http://localhost:3001/todos', {
+          headers: {
+            Authorization: `${app.$auth.getToken('local')}`,
+          },
+        });
+        console.log(response.data);
+        return { todos: response.data };
+      }
+      return { todos: [] };
+    } catch (error) {
+      console.error('API 호출 중 오류 발생:', error);
+      return { todos: [] };
+    }
+  },
   components: {
     TodoInput,
   },
