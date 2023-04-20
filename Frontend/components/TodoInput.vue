@@ -48,7 +48,7 @@ export default {
                         },
                     });
                     
-                    this.$parent.$data.todos.push({
+                    this.$parent.$data.todos.unshift({
                         content: this.todo,
                         feel: this.iconIndex,
                         status: this.isDone,
@@ -57,10 +57,10 @@ export default {
                     this.resetIcon();
                     this.clearTodo();
                 } else {
-                    console.log("로그인이 필요합니다.");
+                    this.$root.$emit('showSnackbar', '로그인하셔야합니다.', 'red', 5000);
                 }
             } catch (error) {
-                console.error("API 호출 중 오류 발생:", error);
+                this.$root.$emit('showSnackbar', '서버와의 연결에 실패하였습니다.', 'red', 5000);
             }
         },
         clearTodo() {
@@ -78,4 +78,5 @@ export default {
     },
 }
 </script>
-<style scoped></style>
+<style scoped>
+</style>
