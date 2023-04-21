@@ -4,6 +4,7 @@ import {
     Delete,
     Get,
     HttpCode,
+    Param,
     Patch,
     Post,
     Query,
@@ -95,7 +96,7 @@ export class TodosController {
     @UseGuards(JwtAuthGuard)
     async editTodo(
         @AuthUser() authUser: UserEntity,
-        @Query('todoId') todoId: number,
+        @Param('todoId') todoId: number,
         @Body() editTodoRequestDto: EditTodoRequestDto,
     ): Promise<EditTodoResponseDto> {
         return this.todosService.editTodo(
@@ -126,7 +127,7 @@ export class TodosController {
     @UseGuards(JwtAuthGuard)
     async deleteTodo(
         @AuthUser() authUser: UserEntity,
-        @Query('todoId') todoId: number,
+        @Param('todoId') todoId: number,
     ): Promise<DeleteTodoResponseDto> {
         return this.todosService.deleteTodo(authUser.id, todoId);
     }
