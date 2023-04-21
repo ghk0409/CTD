@@ -11,7 +11,8 @@
               <v-divider v-if="i !== 0" :key="`${i}-divider`"></v-divider>
               <v-list-item>
                 <v-list-item-action>
-                  <v-checkbox v-model="todoObj.status" :color="todoObj.status==1 && 'grey' || 'primary'">
+                  <v-checkbox v-model="todoObj.status" :color="todoObj.status == 1 && 'grey' || 'primary'"
+                    @change="updateTodo(todoObj)">
                     <template v-slot:label>
                       <div :style="{ textDecoration: todoObj.status == 1 ? 'line-through' : 'none' }" class="ms-4"
                         v-text="todoObj.content">
@@ -21,7 +22,7 @@
                 </v-list-item-action>
                 <v-spacer></v-spacer>
                 <v-scroll-x-transition>
-                  <v-icon v-if="todoObj.status==1" color="success">
+                  <v-icon v-if="todoObj.status == 1" color="success">
                     mdi-check
                   </v-icon>
                 </v-scroll-x-transition>
@@ -51,7 +52,6 @@
 import TodoInput from '~/components/TodoInput.vue';
 import axios from 'axios';
 export default {
-  
   async asyncData({ app }) {
     try {
       if (app.$auth.loggedIn) {
@@ -60,7 +60,7 @@ export default {
             Authorization: `${app.$auth.getToken('local')}`,
           },
         });
-        return { todos: response.data.data };
+        return { todos: response.data.data.todos, userId: response.data.data.userId };
       }
       return { todos: [] };
     } catch (error) {
@@ -82,6 +82,27 @@ export default {
         this.$router.go(); // 리로드
       } catch (error) {
         console.error('로그아웃 실패:', error);
+      }
+    },
+    async updateTodo(todoObj) {
+      try {
+        const statusValue = todoObj.status ? 1 : 0; //status 숫자로 치환    
+        const response = await axios.patch(`http://localhost:3001/todos/${todoObj.id}`, {
+          status: statusValue,
+        }, {
+          headers: {
+            Authorization: `${this.$auth.getToken('local')}`,
+          },
+        });
+
+        if (response.status === 200) {
+          this.$root.$emit('showSnackbar', 'todo 업데이트 되었습니다.', 'green', 5000);
+        } else {
+          this.$root.$emit('showSnackbar', 'todo 업데이트에 실패했습니다.', 'red', 5000);
+        }
+      } catch (error) {
+        console.error('API 호출 중 오류 발생:', error);
+        this.$root.$emit('showSnackbar', 'todo 업데이트에 실패했습니다.', 'red', 5000);
       }
     },
   },
