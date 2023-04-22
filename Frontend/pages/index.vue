@@ -5,10 +5,9 @@
         <p>하단의 To Do를 입력해보세요.</p>
       </div>
       <div v-else>
-        <v-card v-if="todos.length > 0">
-          <v-slide-y-transition class="py-0" group tag="v-list">
+        <v-card v-if="todos.length > 0" >
             <div v-for="(todoObj, i) in todos" :key="`${i}-${todoObj.content}`">
-              <v-divider v-if="i !== 0" :key="`${i}-divider`"></v-divider>
+              <v-divider v-if="i !== 0" :key="`${i}-divider`" class="custom-divider"></v-divider>
               <v-list-item>
                 <v-list-item-action>
                   <v-checkbox v-model="todoObj.status" :color="todoObj.status == 1 && 'grey' || 'primary'"
@@ -28,7 +27,7 @@
                 </v-scroll-x-transition>
               </v-list-item>
             </div>
-          </v-slide-y-transition>
+          
         </v-card>
       </div>
     </div>
@@ -131,4 +130,5 @@ p {
   font-weight: bold;
   color: rgba(22, 22, 22, 0.6);
 }
+
 </style>
