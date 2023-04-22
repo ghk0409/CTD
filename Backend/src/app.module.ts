@@ -9,6 +9,8 @@ import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
 import { TodosModule } from './todos/todos.module';
 import { TodoEntity } from './todos/entities/todo.entity';
+import { AiModule } from './ai/ai.module';
+import { AiEntity } from './ai/entities/ai.entity';
 
 @Module({
     imports: [
@@ -26,6 +28,8 @@ import { TodoEntity } from './todos/entities/todo.entity';
                 DB_PASSWORD: Joi.string().required(),
                 DB_NAME: Joi.string().required(),
                 JWT_SECRET_KEY: Joi.string().required(),
+                API_KEY: Joi.string().required(),
+                API_URL: Joi.string().required(),
             }),
         }),
         TypeOrmModule.forRoot({
@@ -38,13 +42,14 @@ import { TodoEntity } from './todos/entities/todo.entity';
             // true일 경우, TypeORMdl DB에 연결할 때, DB를 모듈의 현재 상태로 마이그레이션함(prod에서는 false로 설정!!)
             synchronize: process.env.NODE_ENV !== 'prod',
             logging: process.env.NODE_ENV !== 'prod',
-            entities: [UserEntity, TodoEntity],
+            entities: [UserEntity, TodoEntity, AiEntity],
         }),
         PassportModule,
         UsersModule,
         CommonModule,
         AuthModule,
         TodosModule,
+        AiModule,
     ],
     controllers: [],
     providers: [],

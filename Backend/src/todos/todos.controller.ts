@@ -7,7 +7,6 @@ import {
     Param,
     Patch,
     Post,
-    Query,
     UseGuards,
 } from '@nestjs/common';
 import { TodosService } from './todos.service';
