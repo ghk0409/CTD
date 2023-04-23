@@ -8,8 +8,10 @@ import {
     ApiBearerAuth,
     ApiCreatedResponse,
     ApiOperation,
+    ApiTags,
 } from '@nestjs/swagger';
 
+@ApiTags('클로드 API')
 @Controller('ai')
 export class AiController {
     constructor(private readonly aiService: AiService) {}

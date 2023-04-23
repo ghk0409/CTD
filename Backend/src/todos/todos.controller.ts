@@ -16,6 +16,7 @@ import {
     ApiCreatedResponse,
     ApiOperation,
     ApiQuery,
+    ApiTags,
 } from '@nestjs/swagger';
 import {
     CreateTodoRequestDto,
@@ -28,6 +29,7 @@ import { EditTodoRequestDto, EditTodoResponseDto } from './dtos/edit-todo.dto';
 import { DeleteTodoResponseDto } from './dtos/delete-todo.dto';
 import { ListTodoResponseDto } from './dtos/list-todo.dto';
 
+@ApiTags('ToDo API')
 @Controller('todos')
 export class TodosController {
     constructor(private readonly todosService: TodosService) {}
