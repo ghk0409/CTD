@@ -1,9 +1,8 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
-  // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: 'CTD - AI Coach To Do', //3D3C3C - 80807C
+    titleTemplate: 'CTD - AI Coach To Do',
     title: 'Coach To Do',
     htmlAttrs: {
       lang: 'en'
@@ -19,33 +18,55 @@ export default {
     ]
   },
 
-  // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     '@/assets/css/main.css',
     '@/assets/css/main.scss',
     '@/assets/css/font.css'
   ],
 
-  // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
   ],
 
-  // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
-  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
-    // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
-    // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
   ],
 
-  // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/axios',
+    //auth-next 대체
+    '@nuxtjs/auth'
   ],
+  axios: {
+    // API URL 구성
+    baseURL: 'http://localhost:3001',
+  },
+  // 인증 전략
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: '/users/login', method: 'post', propertyName: 'token' },
+          logout: false,
+          user: { url: '/users/profile', method: 'get', },
+        },
+        tokenRequired: true,
+        tokenType: 'Bearer',
+        autoFetchUser: false, // 모든 페이지 user 호출
+        globalToken: true,
+      },
+      // redirect: {
+      //   login: '/login',
+      //   logout: '/',
+      //   callback: '/login',
+      //   home: '/'
+      // },
 
-  // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
+    },
+  },
+
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
@@ -63,8 +84,9 @@ export default {
       }
     }
   },
-
-  // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-  }
+  },
+  //loading: '~/assets/loading.vue',
+
+  //plugins: ['~/plugins/axios'],
 }
