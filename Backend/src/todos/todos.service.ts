@@ -24,7 +24,7 @@ export class TodosService {
     async getTodos(userId: number): Promise<ListTodoResponseDto> {
         try {
             const todos = await this.todos.find({
-                where: { user: { id: userId } },
+                where: { user: { id: userId }, status: 0 },
                 order: { createdAt: 'DESC' },
             });
 

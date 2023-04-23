@@ -30,7 +30,7 @@ export class AiService {
         try {
             // 해당 유저의 To-Do 가져오기 (최근 3개)
             const todos = await todoRepository.find({
-                where: { user: { id: userId } },
+                where: { user: { id: userId }, status: 0 },
                 order: { createdAt: 'DESC' },
                 take: 3,
             });
