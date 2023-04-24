@@ -6,10 +6,9 @@
 /*  app layout  */
 .layout_wrapper {
   background: #232526E6;
-  background: -webkit-linear-gradient(to right, #232526E6, #414345E6);
-  background: linear-gradient(to right, #232526E6, #414345E6);
+  background: -webkit-linear-gradient(to right, #232526E6, #5f6366e6);
+  background: linear-gradient(to right, #232526E6, #5f6366e6);
 
-  
 }
 
 .v-application {

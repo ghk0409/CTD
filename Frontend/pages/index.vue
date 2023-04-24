@@ -2,32 +2,33 @@
   <div>
     <div class="content_wrapper">
       <div v-if="todos.length === 0">
-        <p>하단의 To Do를 입력해보세요.</p>
+        <p v-if="!this.$auth.loggedIn">로그인이 필요합니다.</p>
+        <p v-else>하단의 To Do를 입력해보세요.</p>
       </div>
       <div v-else>
-        <v-card v-if="todos.length > 0" >
-            <div v-for="(todoObj, i) in todos" :key="`${i}-${todoObj.content}`">
-              <v-divider v-if="i !== 0" :key="`${i}-divider`" class="custom-divider"></v-divider>
-              <v-list-item>
-                <v-list-item-action>
-                  <v-checkbox v-model="todoObj.status" :color="todoObj.status == 1 && 'grey' || 'primary'"
-                    @change="updateTodo(todoObj)">
-                    <template v-slot:label>
-                      <div :style="{ textDecoration: todoObj.status == 1 ? 'line-through' : 'none' }" class="ms-4"
-                        v-text="todoObj.content">
-                      </div>
-                    </template>
-                  </v-checkbox>
-                </v-list-item-action>
-                <v-spacer></v-spacer>
-                <v-scroll-x-transition>
-                  <v-icon v-if="todoObj.status == 1" color="success">
-                    mdi-check
-                  </v-icon>
-                </v-scroll-x-transition>
-              </v-list-item>
-            </div>
-          
+        <v-card v-if="todos.length > 0">
+          <div v-for="(todoObj, i) in todos" :key="`${i}-${todoObj.content}`">
+            <v-divider v-if="i !== 0" :key="`${i}-divider`" class="custom-divider"></v-divider>
+            <v-list-item>
+              <v-list-item-action>
+                <v-checkbox v-model="todoObj.status" :color="todoObj.status == 1 && 'grey' || 'primary'"
+                  @change="updateTodo(todoObj)">
+                  <template v-slot:label>
+                    <div :style="{ textDecoration: todoObj.status == 1 ? 'line-through' : 'none' }" class="ms-4"
+                      v-text="todoObj.content">
+                    </div>
+                  </template>
+                </v-checkbox>
+              </v-list-item-action>
+              <v-spacer></v-spacer>
+              <v-scroll-x-transition>
+                <v-icon v-if="todoObj.status == 1" color="success">
+                  mdi-check
+                </v-icon>
+              </v-scroll-x-transition>
+            </v-list-item>
+          </div>
+
         </v-card>
       </div>
     </div>
@@ -130,5 +131,4 @@ p {
   font-weight: bold;
   color: rgba(22, 22, 22, 0.6);
 }
-
 </style>
