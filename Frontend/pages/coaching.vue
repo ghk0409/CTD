@@ -3,11 +3,8 @@
         <v-card-title>
             <span class="text-h5">AI Advice for you</span>
         </v-card-title>
-        <v-card-text>
-            <template v-if="coachingContent">
-                {{ coachingContent }}
-                <!-- <div v-html="formattedcoachingContent"></div> -->
-            </template>
+        <v-card-text class="mt-5">
+            <div v-if="coachingContent" v-html="formattedcoachingContent"></div>
             <template v-else>
                 시간이 10초 정도 소요됩니다. 잠시만 기다려주세요.
             </template>
@@ -26,8 +23,7 @@ export default {
     },
     computed: {
         formattedcoachingContent() {
-            return this.coachingContent.replace(/(\d+)\.\s/g, '$&<br>');
-            
+            return this.coachingContent.replace(/\n/g, '<br>');
         },
     },
     async mounted() {
