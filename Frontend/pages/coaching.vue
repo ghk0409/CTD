@@ -36,6 +36,7 @@ export default {
             this.coachingContent = response.data.claude;
         } catch (error) {
             console.error(error);
+            this.$root.$emit('showSnackbar', '네트워크 에러가 발생했습니다. 다시 시도해주세요.', 'red', 5000);
         }
     },
 }

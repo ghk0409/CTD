@@ -2,15 +2,15 @@
     <v-bottom-navigation app :elevation="8" grow fixed>
         <v-btn value="home" to="/">
             <v-icon>mdi-home</v-icon>
-            home
+            HOME
         </v-btn>
         <v-btn value="favorites">
-            <v-icon>mdi-heart</v-icon>
-            community
+            <v-icon>mdi-account</v-icon>
+            ME
         </v-btn>
         <v-btn value="nearby" to="/coaching">
             <v-icon>mdi-account-search</v-icon>
-            coaching
+            COACHING
         </v-btn>
     </v-bottom-navigation>
 </template>
