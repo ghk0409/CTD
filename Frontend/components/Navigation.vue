@@ -4,7 +4,7 @@
             <v-icon>mdi-home</v-icon>
             HOME
         </v-btn>
-        <v-btn value="favorites">
+        <v-btn value="favorites" to="/me">
             <v-icon>mdi-account</v-icon>
             ME
         </v-btn>

@@ -75,15 +75,6 @@ export default {
     todos: [],
   }),
   methods: {
-    async logout() {
-      try {
-        await this.$auth.logout();
-        this.$root.$emit('showSnackbar', '로그아웃되었습니다.', 'blue', 5000);
-        this.$router.go(); // 리로드
-      } catch (error) {
-        console.error('로그아웃 실패:', error);
-      }
-    },
     async updateTodo(todoObj) {
       try {
         const statusValue = todoObj.status ? 1 : 0; //status 숫자로 치환    
