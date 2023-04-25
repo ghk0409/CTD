@@ -12,7 +12,7 @@
 <script>
 import axios from 'axios';
 
-export default {    
+export default {
     data: () => ({
         todo: '',
         isDone: 0,
@@ -37,6 +37,13 @@ export default {
 
     methods: {
         async sendTodo() {
+            
+            // 빈 값인 경우
+            if (this.todo.trim() === '') {
+                this.$root.$emit('showSnackbar', '내용을 입력해주세요.', 'red', 3000);
+                return;
+            }
+
             try {
                 if (this.$root.$auth.loggedIn) {
                     const response = await axios.post('http://localhost:3001/todos', {
@@ -47,7 +54,7 @@ export default {
                             Authorization: `${this.$root.$auth.getToken('local')}`,
                         },
                     });
-                    
+
                     this.$parent.$data.todos.unshift({
                         content: this.todo,
                         feel: this.iconIndex,
@@ -78,5 +85,4 @@ export default {
     },
 }
 </script>
-<style scoped>
-</style>
+<style scoped></style>
