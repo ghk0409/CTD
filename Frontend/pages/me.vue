@@ -3,7 +3,7 @@
         <v-card class="mx-auto" max-width="300" tile>
             <v-list dense flat>
                 <v-list-item-group v-model="selectedItem" color="black">
-                    <v-list-item v-for="(item, i) in items" :key="i">
+                    <v-list-item v-for="(item, i) in items" :key="i" @click="itemAction(item)">
                         <v-list-item-icon>
                             <v-icon v-text="item.icon"></v-icon>
                         </v-list-item-icon>
@@ -22,15 +22,20 @@ export default {
     data: () => ({
         selectedItem: 0,
         items: [
-            { text: '로그아웃', icon: 'mdi-account-lock-open' },
+            { text: '로그아웃', icon: 'mdi-account-lock-open', },
         ],
     }),
-    method: {
+    methods: {
+        itemAction(item) {
+            if (item.text === '로그아웃') {
+                this.logout();
+            }
+        },
         async logout() {
             try {
                 await this.$auth.logout();
                 this.$root.$emit('showSnackbar', '로그아웃되었습니다.', 'blue', 5000);
-                this.$router.go(); // 리로드
+                this.$router.push('/');
             } catch (error) {
                 console.error('로그아웃 실패:', error);
             }

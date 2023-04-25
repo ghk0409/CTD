@@ -38,7 +38,7 @@
         <v-icon>mdi-account-key</v-icon>
       </v-btn>
       <v-btn v-if="this.$auth.loggedIn" color="green" fab dark small fixed
-        :style="{ right: 'calc(50% - 200px)', bottom: '150px' }" @click="logout()">
+        :style="{ right: 'calc(50% - 200px)', bottom: '150px' }" to="/me">
         <v-icon>mdi-account</v-icon>
       </v-btn>
     </v-fab-transition>
