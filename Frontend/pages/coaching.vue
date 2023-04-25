@@ -29,7 +29,15 @@ export default {
     async mounted() {
         try {
             const response = await this.$axios.$post('/ai/claude');
-            this.coachingContent = response.data.claude;
+            if(response.ok){
+                this.coachingContent = response.data.claude;
+            }else{
+                this.$router.push('/');
+                this.$root.$emit('showSnackbar', '목록이 없습니다.', 'red', 5000);
+            }
+                
+            
+            
         } catch (error) {
             console.error(error);
             this.$root.$emit('showSnackbar', '네트워크 에러가 발생했습니다. 다시 시도해주세요.', 'red', 5000);
