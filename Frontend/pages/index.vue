@@ -14,7 +14,7 @@
                 <v-checkbox v-model="todoObj.status" :color="todoObj.status == 1 && 'grey' || 'primary'"
                   @change="updateTodo(todoObj)">
                   <template v-slot:label>
-                    <div :style="{ textDecoration: todoObj.status == 1 ? 'line-through' : 'none' }" class="ms-4"
+                    <div :style="{ textDecoration: todoObj.status == 1 ? 'line-through' : 'none' }" class="ms-4 txt_area"
                       v-text="todoObj.content">
                     </div>
                   </template>
@@ -121,5 +121,12 @@ p {
   text-align: center;
   font-weight: bold;
   color: rgba(22, 22, 22, 0.6);
+}
+
+.v-list-item {
+  word-break: break-all;
+}
+.txt_area{
+  width : 260px
 }
 </style>
