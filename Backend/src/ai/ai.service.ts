@@ -28,9 +28,25 @@ export class AiService {
         const todoRepository = queryRunner.manager.getRepository(TodoEntity);
 
         try {
+            // ai 테이블에 데이터 있는지 확인
+            const oldClaude = await aiRepository.findOne({
+                where: { user: { id: userId } },
+            });
+
+            // 데이터 있으면 바로 반환
+            if (oldClaude) {
+                return {
+                    ok: true,
+                    data: {
+                        userId,
+                        claude: oldClaude.sentence,
+                    },
+                };
+            }
+
             // 해당 유저의 To-Do 가져오기 (최근 3개)
             const todos = await todoRepository.find({
-                where: { user: { id: userId } },
+                where: { user: { id: userId }, status: 0 },
                 order: { createdAt: 'DESC' },
                 take: 3,
             });
@@ -103,7 +119,7 @@ export class AiService {
         const datas = {
             prompt: userQuestion,
             model: 'claude-v1.3',
-            max_tokens_to_sample: 500,
+            max_tokens_to_sample: 700,
             stop_sequences: ['\n\nHuman'],
         };
 

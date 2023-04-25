@@ -2,32 +2,33 @@
   <div>
     <div class="content_wrapper">
       <div v-if="todos.length === 0">
-        <p>하단의 To Do를 입력해보세요.</p>
+        <p v-if="!this.$auth.loggedIn">로그인이 필요합니다.</p>
+        <p v-else>하단의 To Do를 입력해보세요.</p>
       </div>
       <div v-else>
-        <v-card v-if="todos.length > 0" >
-            <div v-for="(todoObj, i) in todos" :key="`${i}-${todoObj.content}`">
-              <v-divider v-if="i !== 0" :key="`${i}-divider`" class="custom-divider"></v-divider>
-              <v-list-item>
-                <v-list-item-action>
-                  <v-checkbox v-model="todoObj.status" :color="todoObj.status == 1 && 'grey' || 'primary'"
-                    @change="updateTodo(todoObj)">
-                    <template v-slot:label>
-                      <div :style="{ textDecoration: todoObj.status == 1 ? 'line-through' : 'none' }" class="ms-4"
-                        v-text="todoObj.content">
-                      </div>
-                    </template>
-                  </v-checkbox>
-                </v-list-item-action>
-                <v-spacer></v-spacer>
-                <v-scroll-x-transition>
-                  <v-icon v-if="todoObj.status == 1" color="success">
-                    mdi-check
-                  </v-icon>
-                </v-scroll-x-transition>
-              </v-list-item>
-            </div>
-          
+        <v-card v-if="todos.length > 0">
+          <div v-for="(todoObj, i) in todos" :key="`${i}-${todoObj.content}`">
+            <v-divider v-if="i !== 0" :key="`${i}-divider`" class="custom-divider"></v-divider>
+            <v-list-item>
+              <v-list-item-action>
+                <v-checkbox v-model="todoObj.status" :color="todoObj.status == 1 && 'grey' || 'primary'"
+                  @change="updateTodo(todoObj)">
+                  <template v-slot:label>
+                    <div :style="{ textDecoration: todoObj.status == 1 ? 'line-through' : 'none' }" class="ms-4 txt_area"
+                      v-text="todoObj.content">
+                    </div>
+                  </template>
+                </v-checkbox>
+              </v-list-item-action>
+              <v-spacer></v-spacer>
+              <v-scroll-x-transition>
+                <v-icon v-if="todoObj.status == 1" color="success">
+                  mdi-check
+                </v-icon>
+              </v-scroll-x-transition>
+            </v-list-item>
+          </div>
+
         </v-card>
       </div>
     </div>
@@ -37,7 +38,7 @@
         <v-icon>mdi-account-key</v-icon>
       </v-btn>
       <v-btn v-if="this.$auth.loggedIn" color="green" fab dark small fixed
-        :style="{ right: 'calc(50% - 200px)', bottom: '150px' }" @click="logout()">
+        :style="{ right: 'calc(50% - 200px)', bottom: '150px' }" to="/me">
         <v-icon>mdi-account</v-icon>
       </v-btn>
     </v-fab-transition>
@@ -74,15 +75,6 @@ export default {
     todos: [],
   }),
   methods: {
-    async logout() {
-      try {
-        await this.$auth.logout();
-        this.$root.$emit('showSnackbar', '로그아웃되었습니다.', 'blue', 5000);
-        this.$router.go(); // 리로드
-      } catch (error) {
-        console.error('로그아웃 실패:', error);
-      }
-    },
     async updateTodo(todoObj) {
       try {
         const statusValue = todoObj.status ? 1 : 0; //status 숫자로 치환    
@@ -131,4 +123,10 @@ p {
   color: rgba(22, 22, 22, 0.6);
 }
 
+.v-list-item {
+  word-break: break-all;
+}
+.txt_area{
+  width : 260px
+}
 </style>

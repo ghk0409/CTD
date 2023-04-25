@@ -17,14 +17,22 @@ export default {
         snackbar: false,
         btnColor: "pink",
         snackbarMessage: "",
+        timerId: null,
     }),
     methods: {
-        showMessage(msg, color,duration = 3000) {
+        showMessage(msg, color, duration = 3000) {
+            // 이전 타이머를 취소
+            if (this.timerId) {
+                clearTimeout(this.timerId);
+            }
+
             this.snackbarMessage = msg;
             this.btnColor = color;
             this.snackbar = true;
-            setTimeout(() => {
+            // 타이머 아이디 설정
+            this.timerId = setTimeout(() => {
                 this.snackbar = false;
+                this.timerId = null; // 초기화
             }, duration);
         },
     },

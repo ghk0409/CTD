@@ -57,13 +57,6 @@ export default {
         autoFetchUser: false, // 모든 페이지 user 호출
         globalToken: true,
       },
-      // redirect: {
-      //   login: '/login',
-      //   logout: '/',
-      //   callback: '/login',
-      //   home: '/'
-      // },
-
     },
   },
 
