@@ -14,6 +14,8 @@ import {
     UserProfileEditResponseDto,
     UserProfileResponseDto,
 } from './dtos/user-profile.dto';
+import { MailService } from 'src/mail/mail.service';
+import { VerificationEntity } from './entities/verification.entity';
 @Injectable()
 export class UsersService {
     constructor(
@@ -21,6 +23,8 @@ export class UsersService {
         private readonly users: Repository<UserEntity>,
         private readonly httpService: HttpService,
         private readonly authService: AuthService,
+        private readonly emailService: MailService,
+        private readonly verifications: Repository<VerificationEntity>,
     ) {}
 
     // 유저 회원가입
@@ -52,9 +56,12 @@ export class UsersService {
             if (!nickname) nickname = '닉네임 바꿔주세요';
 
             // 유저 생성
-            await this.users.save(
+            const user = await this.users.save(
                 this.users.create({ email, password, nickname }),
             );
+
+            // 인증 코드 생성 및 메일 발송
+            await this.verificationEmail(email, user);
 
             return { ok: true };
         } catch (error) {
@@ -155,7 +162,10 @@ export class UsersService {
             if (email) {
                 user.email = email;
                 user.verified = false;
-                // 이메일 인증 테이블 데이터 생성 및 인증 이메일 발송 : TODO
+                // 먼저 기존 verification 삭제
+                await this.verifications.delete({ user: { id: user.id } });
+                // 인증 코드 생성 및 메일 발송
+                await this.verificationEmail(email, user);
             }
             // 패스워드 수정
             if (password) {
@@ -177,5 +187,18 @@ export class UsersService {
                 error,
             };
         }
+    }
+
+    // 이메일 인증
+
+    // 인증 코드 생성 및 인증 메일 발송 메서드
+    private async verificationEmail(email: string, user: UserEntity) {
+        // 인증 코드 생성
+        const verification = await this.verifications.save(
+            this.verifications.create({ user }),
+        );
+
+        // 인증 메일 발송
+        await this.emailService.sendVerificationEmail(email, verification.code);
     }
 }

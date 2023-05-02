@@ -11,7 +11,7 @@ import { TodosModule } from './todos/todos.module';
 import { TodoEntity } from './todos/entities/todo.entity';
 import { AiModule } from './ai/ai.module';
 import { AiEntity } from './ai/entities/ai.entity';
-
+import { MailModule } from './mail/mail.module';
 @Module({
     imports: [
         ConfigModule.forRoot({
@@ -23,13 +23,18 @@ import { AiEntity } from './ai/entities/ai.entity';
             validationSchema: Joi.object({
                 NODE_ENV: Joi.string().valid('dev', 'prod').required(),
                 DB_HOST: Joi.string().required(),
-                DB_PORT: Joi.string().required(),
+                DB_PORT: Joi.number().required(),
                 DB_USERNAME: Joi.string().required(),
                 DB_PASSWORD: Joi.string().required(),
                 DB_NAME: Joi.string().required(),
                 JWT_SECRET_KEY: Joi.string().required(),
                 API_KEY: Joi.string().required(),
                 API_URL: Joi.string().required(),
+                MAIL_TRANSPORT: Joi.string().required(),
+                MAIL_PORT: Joi.number().required(),
+                MAIL_USER: Joi.string().required(),
+                MAIL_PASSWORD: Joi.string().required(),
+                MAIL_FROM: Joi.string().required(),
             }),
         }),
         TypeOrmModule.forRoot({
@@ -50,6 +55,13 @@ import { AiEntity } from './ai/entities/ai.entity';
         AuthModule,
         TodosModule,
         AiModule,
+        MailModule.forRoot({
+            MAIL_TRANSPORT: process.env.MAIL_TRANSPORT,
+            MAIL_PORT: +process.env.MAIL_PORT,
+            MAIL_USER: process.env.MAIL_USER,
+            MAIL_PASSWORD: process.env.MAIL_PASSWORD,
+            MAIL_FROM: process.env.MAIL_FROM,
+        }),
     ],
     controllers: [],
     providers: [],
