@@ -24,6 +24,7 @@ export class UsersService {
         private readonly httpService: HttpService,
         private readonly authService: AuthService,
         private readonly emailService: MailService,
+        @InjectRepository(VerificationEntity)
         private readonly verifications: Repository<VerificationEntity>,
     ) {}
 

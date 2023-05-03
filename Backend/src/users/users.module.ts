@@ -4,10 +4,12 @@ import { UsersService } from './users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { HttpModule } from '@nestjs/axios';
+import { VerificationEntity } from './entities/verification.entity';
+import { MailService } from 'src/mail/mail.service';
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([UserEntity]),
+        TypeOrmModule.forFeature([UserEntity, VerificationEntity]),
         HttpModule.registerAsync({
             useFactory: () => ({
                 timeout: 5000,
@@ -16,6 +18,6 @@ import { HttpModule } from '@nestjs/axios';
         }),
     ],
     controllers: [UsersController],
-    providers: [UsersService],
+    providers: [UsersService, MailService],
 })
 export class UsersModule {}

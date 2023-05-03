@@ -13,13 +13,17 @@ export class MailModule {
             imports: [
                 MailerModule.forRootAsync({
                     useFactory: () => ({
-                        // transport: 'smtps://user@domain.com:pass@smtp.domain.com',
-                        transport: options.MAIL_TRANSPORT,
-                        port: options.MAIL_PORT,
-                        auth: {
-                            user: options.MAIL_USER,
-                            pass: options.MAIL_PASSWORD,
+                        transport: {
+                            service: options.MAIL_SERVICE,
+                            host: options.MAIL_HOST,
+                            port: options.MAIL_PORT,
+                            secure: true,
+                            auth: {
+                                user: options.MAIL_USER,
+                                pass: options.MAIL_PASSWORD,
+                            },
                         },
+                        // 'smtps://user@domain.com:pass@smtp.domain.com',
                         defaults: {
                             from: options.MAIL_FROM,
                         },
@@ -30,7 +34,7 @@ export class MailModule {
                                 strict: true,
                             },
                         },
-                        preview: true,
+                        preview: false,
                     }),
                 }),
             ],

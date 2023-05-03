@@ -12,6 +12,7 @@ import { TodoEntity } from './todos/entities/todo.entity';
 import { AiModule } from './ai/ai.module';
 import { AiEntity } from './ai/entities/ai.entity';
 import { MailModule } from './mail/mail.module';
+import { VerificationEntity } from './users/entities/verification.entity';
 @Module({
     imports: [
         ConfigModule.forRoot({
@@ -30,7 +31,8 @@ import { MailModule } from './mail/mail.module';
                 JWT_SECRET_KEY: Joi.string().required(),
                 API_KEY: Joi.string().required(),
                 API_URL: Joi.string().required(),
-                MAIL_TRANSPORT: Joi.string().required(),
+                MAIL_SERVICE: Joi.string().required(),
+                MAIL_HOST: Joi.string().required(),
                 MAIL_PORT: Joi.number().required(),
                 MAIL_USER: Joi.string().required(),
                 MAIL_PASSWORD: Joi.string().required(),
@@ -47,7 +49,7 @@ import { MailModule } from './mail/mail.module';
             // true일 경우, TypeORMdl DB에 연결할 때, DB를 모듈의 현재 상태로 마이그레이션함(prod에서는 false로 설정!!)
             synchronize: process.env.NODE_ENV !== 'prod',
             logging: process.env.NODE_ENV !== 'prod',
-            entities: [UserEntity, TodoEntity, AiEntity],
+            entities: [UserEntity, TodoEntity, AiEntity, VerificationEntity],
         }),
         PassportModule,
         UsersModule,
@@ -56,7 +58,8 @@ import { MailModule } from './mail/mail.module';
         TodosModule,
         AiModule,
         MailModule.forRoot({
-            MAIL_TRANSPORT: process.env.MAIL_TRANSPORT,
+            MAIL_SERVICE: process.env.MAIL_SERVICE,
+            MAIL_HOST: process.env.MAIL_TRANSPORT,
             MAIL_PORT: +process.env.MAIL_PORT,
             MAIL_USER: process.env.MAIL_USER,
             MAIL_PASSWORD: process.env.MAIL_PASSWORD,
